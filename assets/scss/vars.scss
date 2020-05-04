@@ -1,0 +1,35 @@
+$base-color: #565656;
+$base-font-size: 1.6rem;
+$primary-color: #18a682;
+$primary-color-l: lighten($primary-color, 5%);
+$primary-color-pale: #f0f5f3;
+$l-gray: #dddddd;
+$d-gray: #c9c9c9;
+$func-blue: #2889fc;
+$func-red: #fd5e84;
+$shadow: 0px 3px 36px rgba(0, 0, 0, 0.16);
+
+%dialog-base {
+  border-radius: 10px;
+  box-shadow: $shadow;
+}
+
+@mixin bgHover($bgc) {
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: $bgc;
+  }
+}
+
+@mixin dialogTransition {
+  &-enter-active,
+  &-leave-active {
+    transition: transform 0.15s cubic-bezier(0.34, 0, 1, 0.98),
+      opacity 0.15s cubic-bezier(0.34, 0, 1, 0.98);
+  }
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0);
+  }
+}
