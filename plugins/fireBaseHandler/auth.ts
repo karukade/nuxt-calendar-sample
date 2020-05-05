@@ -85,10 +85,9 @@ export const signIn = async (name: ProvidersName) => {
   if (auth.currentUser) return
   if (name === 'TestUser') {
     const { email, pass } = testUser
-    auth.signInWithEmailAndPassword(email, pass).catch((e) => {
+    return await auth.signInWithEmailAndPassword(email, pass).catch((e) => {
       throw new Error(e)
     })
-    return
   }
   const provider = getProvider(name)
   return await auth

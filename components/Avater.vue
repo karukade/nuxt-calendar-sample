@@ -51,11 +51,15 @@ export default Vue.extend({
     user(): UserInfo | null {
       return (this.$store as ExStore).state.user.user
     },
-    avater(): { backgroundImage: string } | void {
+    avater(): { background: string } | void {
       if (!this.user) return
-      return {
-        backgroundImage: `url(${this.user.picture})`
-      }
+      const hasPicture = !!this.user.picture
+      const imgUrl = hasPicture
+        ? this.user.picture
+        : '/_nuxt/assets/img/ico-calendar.svg'
+      const size = hasPicture ? 'cover' : '60% auto'
+      const background = `#eee url(${imgUrl}) no-repeat center/ ${size}`
+      return { background }
     }
   },
   methods: {

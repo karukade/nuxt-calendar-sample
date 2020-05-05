@@ -20,7 +20,7 @@ export default Vue.extend({
   props: {
     stroke: {
       type: String,
-      default: () => '#89a79f'
+      default: () => '#18a682'
     },
     size: {
       type: Number,

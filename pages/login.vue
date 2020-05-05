@@ -43,10 +43,15 @@
             class="login__side-content"
             v-html="wikiHtml"
           ></ul>
-          <Spinner v-else class="login__spinner" stroke="#fff" />
+          <Spinner v-else class="login__wiki-spinner" stroke="#fff" />
         </transition>
       </div>
     </div>
+    <transition name="login__testuser-loader">
+      <div v-if="testUserLoading" class="login__testuser-loader">
+        <Spinner class="login__testuser-spinner" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -60,6 +65,7 @@ import { signIn, ProvidersName } from '@/plugins/fireBaseHandler/'
 type DataType = {
   providers: ProvidersName[]
   wikiHtml: null | string
+  testUserLoading: boolean
 }
 
 export default Vue.extend({
@@ -71,7 +77,8 @@ export default Vue.extend({
   layout: 'login',
   data: (): DataType => ({
     providers: ['Google', 'Facebook', 'Github', 'TestUser'],
-    wikiHtml: null
+    wikiHtml: null,
+    testUserLoading: false
   }),
   computed: {
     today(): string {
@@ -83,7 +90,9 @@ export default Vue.extend({
   },
   methods: {
     async onClick(provider: ProvidersName) {
+      if (provider === 'TestUser') this.testUserLoading = true
       await signIn(provider)
+      if (provider === 'TestUser') this.testUserLoading = false
       this.$router.push('/')
     },
     async getWikiToday() {
@@ -145,7 +154,7 @@ export default Vue.extend({
     position: relative;
     overflow: auto;
   }
-  &__spinner {
+  &__wiki-spinner {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -195,6 +204,25 @@ export default Vue.extend({
     font-size: 30px;
     letter-spacing: 0.05em;
     font-weight: normal;
+  }
+  &__testuser-loader {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-enter-active,
+    &-leave-active {
+      transition: opacity 0.2s cubic-bezier(0.34, 0, 1, 0.98);
+    }
+    &-enter,
+    &-leave-to {
+      opacity: 0;
+    }
   }
   &__side-content {
     list-style: none;
