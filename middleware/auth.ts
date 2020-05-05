@@ -10,14 +10,14 @@ const auth: Middleware = async ({ store, redirect, route }) => {
 
   const userInfo = await authStateChanged()
   if (!userInfo) {
-    if (route.path !== '/login') redirect('/login')
+    if (!/\/login\/?/.test(route.path)) redirect('/login')
     return
   }
 
   let hasFireStoreErr = false
   await setReadWriteCounter(userInfo?.id).catch(() => (hasFireStoreErr = true))
-  if (hasFireStoreErr && route.path !== '/sorry') redirect('/sorry')
-  if (!hasFireStoreErr && route.path === '/sorry') redirect('/')
+  if (hasFireStoreErr && !/\/sorry\/?/.test(route.path)) redirect('/sorry')
+  if (!hasFireStoreErr && /\/sorry\/?/.test(route.path)) redirect('/')
   ;(store as ExStore).commit('user/setUser', userInfo)
 }
 export default auth
