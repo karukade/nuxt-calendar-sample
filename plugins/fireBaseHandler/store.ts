@@ -1,4 +1,4 @@
-import { firestore } from 'firebase'
+import { firestore } from 'firebase/app'
 import { toNonReactive } from '@/plugins/utils'
 import { db } from '@/plugins/fireBaseHandler/init'
 
