@@ -77,9 +77,7 @@ export default Vue.extend({
       set(value: DateInfo) {
         const isValid = this.isValideDate(value)
         const innerVal = isValid ? value : this.from
-        const localInputValue = toString(innerVal, 'ymd')
-        if (!localInputValue) return
-        this.localInputValue = localInputValue
+        this.localInputValue = toString(innerVal, 'ymd')
         this.$emit('update:date', { ...innerVal })
         if (!isValid) {
           const textField = this.$refs.textField as InstanceType<
@@ -109,9 +107,7 @@ export default Vue.extend({
     date: {
       immediate: true,
       handler(value: DateInfo) {
-        const localInputValue = toString(value, 'ymd')
-        if (!localInputValue) return
-        this.localInputValue = localInputValue
+        this.localInputValue = toString(value, 'ymd')
       }
     }
   },
@@ -137,9 +133,7 @@ export default Vue.extend({
         return
       }
       textField.shake()
-      const localInputValue = toString(this.localDate, 'ymd')
-      if (!localInputValue) return
-      this.localInputValue = localInputValue
+      this.localInputValue = toString(this.localDate, 'ymd')
       this.$nextTick(textField.select)
     },
     getDateInfoObj(value: string): DateInfo | null {

@@ -12,6 +12,5 @@ export {
   subscribeSchedule,
   updateSchedule,
   unsubscribeSchedule,
-  setReadWriteCounter,
-  addStoreErrHandler
+  setReadWriteCounter
 } from '@/plugins/fireBaseHandler/store'

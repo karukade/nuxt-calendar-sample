@@ -82,27 +82,30 @@ export const incMonth = (baseYearMonth: YearMonth, increments: number) => {
   return calendar
 }
 
-const isNumber = (...args: (number | void)[]): boolean => {
-  return args.every((arg) => typeof arg === 'number' && isFinite(arg))
+type ToStringFormat = 'y' | 'ym' | 'ymd' | 'md'
+
+type ToString = {
+  (yearmonth: DateInfo, format: ToStringFormat): string
+  (
+    yearmonth: Pick<DateInfo, 'years' | 'months'>,
+    format: ToStringFormat
+  ): string
+  (yearmonth: Pick<DateInfo, 'years'>, format: ToStringFormat): string
 }
 
-export const toString = (
-  yearmonthObj: Partial<DateInfo>,
+export const toString: ToString = (
+  yearmonthObj: { years: any; months?: any; date?: any },
   format: 'y' | 'ym' | 'ymd' | 'md'
-): string | void => {
+): string => {
   const { years, months, date } = yearmonthObj
   switch (format) {
     case 'y':
-      if (!isNumber(years)) return
       return `${years}年`
     case 'ym':
-      if (!isNumber(years, months)) return
-      return `${years}年${(months as number) + 1}月`
+      return `${years}年${months + 1}月`
     case 'ymd':
-      if (!isNumber(years, months, date)) return
-      return `${years}年${(months as number) + 1}月${date}日`
+      return `${years}年${months + 1}月${date}日`
     case 'md':
-      if (!isNumber(months, date)) return
-      return `${(months as number) + 1}月${date}日`
+      return `${months + 1}月${date}日`
   }
 }

@@ -8,18 +8,19 @@ import { ScheduleObj } from '@/plugins/schedule'
 type Action = 'read' | 'write' | 'both'
 
 const storeIncrement = firestore.FieldValue.increment
-const errHandlers: ((e: any) => void)[] = []
 let unsubscribe!: () => void
 let currentYear: number | null = null
 
-const errHandler = (e: any) => {
-  errHandlers.forEach((func) => func(e))
+type IncReadWrite = {
+  (userId: string, action: Action, useBatch: boolean): firestore.WriteBatch
+  (userId: string, action: Action): Promise<void>
 }
 
-export const addStoreErrHandler = (func: (e: any) => void) =>
-  errHandlers.push(func)
-
-const incReadWrite = (userId: string, action: Action, useBatch?: boolean) => {
+const incReadWrite: IncReadWrite = (
+  userId: string,
+  action: Action,
+  useBatch?: boolean
+): any => {
   const ref = db.doc(`users/${userId}`)
   const data = getReadWriteObj(action)
 
@@ -28,7 +29,7 @@ const incReadWrite = (userId: string, action: Action, useBatch?: boolean) => {
     batch.update(ref, data)
     return batch
   }
-  ref.update(data).catch(errHandler)
+  return ref.update(data)
 }
 
 const getReadWriteObj = (action: Action) => {
@@ -46,12 +47,14 @@ const getReadWriteObj = (action: Action) => {
 }
 
 export const addSchedule = (userId: string, schedule: ScheduleObj) => {
-  incReadWrite(userId, 'both')
+  incReadWrite(userId, 'both').catch((e) => {
+    throw new Error(e)
+  })
   return db.collection(`users/${userId}/schedule`).add(schedule)
 }
 
 export const deleteSchedule = (userId: string, id: string): Promise<void> => {
-  const batch = incReadWrite(userId, 'both', true) as firestore.WriteBatch
+  const batch = incReadWrite(userId, 'both', true)
   batch.delete(db.doc(`users/${userId}/schedule/${id}`))
   return batch.commit()
 }
@@ -61,7 +64,7 @@ export const updateSchedule = (
   id: string,
   schedule: ScheduleObj
 ) => {
-  const batch = incReadWrite(userId, 'both', true) as firestore.WriteBatch
+  const batch = incReadWrite(userId, 'both', true)
   batch.update(db.doc(`users/${userId}/schedule/${id}`), schedule)
   return batch.commit()
 }
@@ -96,7 +99,7 @@ export const subscribeSchedule = (
       const schedules: ScheduleObj[] = []
       querySnapshot.forEach((doc) => {
         const { id } = doc
-        const data = toNonReactive(doc.data()) as ScheduleObj
+        const data = toNonReactive(doc.data() as ScheduleObj)
         data.info.id = id
         schedules.push(data)
       })
