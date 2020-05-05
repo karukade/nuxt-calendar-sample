@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.10.3",
     "@popperjs/core": "^2.1.1",
     "@types/lodash": "^4.14.150",
-    "firebase": "^7.12.0",
+    "firebase": "^7.14.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0"
