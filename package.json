@@ -10,7 +10,8 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "test": "NODE_ENV=test jest --watch --coverage --config jest.config.js"
+    "test": "NODE_ENV=test jest --watch --coverage --config jest.config.js",
+    "start:firestore": "firebase emulators:start --only firestore"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
