@@ -18,3 +18,10 @@ firebase.initializeApp(firebaseConfig)
 export const firebaseApp = firebase
 export const db = firebase.firestore()
 export const auth = firebase.auth()
+
+if (window.location.hostname === 'localhost') {
+  db.settings({
+    host: 'localhost:8080',
+    ssl: false
+  })
+}
