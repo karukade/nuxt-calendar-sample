@@ -4,7 +4,7 @@
       <div class="login__main-inner">
         <header class="login__header">
           <div class="login__logo">
-            <img src="@/assets/img/logo.svg" alt="ロゴ" />
+            <img src="/img/logo.svg" alt="ロゴ" />
           </div>
           <p class="login__desc">
             カレンダーアプリのサンプルをつくりました。<br />

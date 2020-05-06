@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-left">
       <div class="header-icon">
-        <img src="@/assets/img/ico-calendar.svg" alt="" />
+        <img src="/img/ico-calendar.svg" alt="" />
       </div>
       <div class="header-today-btn">
         <BtnOutLine size="s" @click="setToday">今月</BtnOutLine>
